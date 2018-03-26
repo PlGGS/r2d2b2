@@ -14,22 +14,15 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.Devices.Gpio;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace R2D2G2
 {
 
     public sealed partial class MainPage : Page
     {
-        GpioPin pin0;
-        GpioPinValue pinValue;
-        static int relay0 = 31;
-        static int relay1 = 32;
-        static int relay2 = 33;
-        static int relay3 = 35;
-        static int relay4 = 36;
-        static int relay5 = 37;
-        static int relay6 = 38;
-        static int relay7 = 40;
+        GpioPin[] pins = new GpioPin[8];
+        int[] relayValues = new int[8] { 6, 12, 13, 19, 16, 26, 20, 21 };
         DispatcherTimer timer;
 
         public MainPage()
@@ -39,45 +32,48 @@ namespace R2D2G2
             timer.Interval = TimeSpan.FromMilliseconds(500);
             timer.Tick += Timer_Tick;
             InitGPIO();
-            if (pin0 != null)
-            {
-                timer.Start();
-            }
+            timer.Start();
         }
 
         private void InitGPIO()
         {
             var gpio = GpioController.GetDefault();
 
-            // Show an error if there is no GPIO controller
+            //Show an error if there is no GPIO controller
             if (gpio == null)
             {
-                pin0 = null;
-                Debug.WriteLine("There is no GPIO controller on this device");
+                txbDebug.Text = "There is no GPIO controller on this device";
                 return;
             }
 
-            pin0 = gpio.OpenPin(relay0);
-            pinValue = GpioPinValue.High;
-            pin0.Write(pinValue);
-            pin0.SetDriveMode(GpioPinDriveMode.Output);
+            //Initialize pins
+            txbDebug.Text = $"GPIO pins ";
 
-            Debug.WriteLine("GPIO pin initialized correctly");
+            for (int i = 0; i < pins.Length; i++)
+            {
+                pins[i] = gpio.OpenPin(relayValues[i]);
+                pins[i].SetDriveMode(GpioPinDriveMode.Output);
+                pins[i].Write(GpioPinValue.High);
+                txbDebug.Text += $"{i} ";
+            }
+
+            txbDebug.Text += "initialized properly";
         }
 
         private void Timer_Tick(object sender, object e)
         {
-            if (pinValue == GpioPinValue.High)
+            for (int i = 0; i < pins.Length; i++)
             {
-                pinValue = GpioPinValue.Low;
-                pin0.Write(pinValue);
-                Debug.WriteLine("Low");
-            }
-            else
-            {
-                pinValue = GpioPinValue.High;
-                pin0.Write(pinValue);
-                Debug.WriteLine("High");
+                if (pins[i].Read() == GpioPinValue.High)
+                {
+                    pins[i].Write(GpioPinValue.Low);
+                }
+                else
+                {
+                    pins[i].Write(GpioPinValue.High);
+                }
+
+                Task.Delay(100).Wait();
             }
         }
     }
