@@ -18,7 +18,6 @@ namespace R2D2G2
         Motor rLeg;
         Motor head;
         public GpioPin[] Pins { get; set; } = new GpioPin[6];
-        public List<Action> Actions { get; set; } = new List<Action>();
 
         public MainPage()
         {
@@ -30,7 +29,6 @@ namespace R2D2G2
 
             InitGPIO();
             InitMotors();
-            InitActions();
 
             //IReadOnlyList<Gamepad> gamepads = Gamepad.Gamepads;
 
@@ -45,11 +43,6 @@ namespace R2D2G2
                                                     new State("Backward", Pins[3]) });
             head = new Motor(new List<State>() { new State("Left", Pins[4]),
                                                     new State("Right", Pins[5]) });
-        }
-
-        private void InitActions()
-        {
-
         }
 
         private void InitGPIO()
