@@ -67,6 +67,9 @@ namespace R2D2G2
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            pins[4].Write(GpioPinValue.Low);
+            pins[2].Write(GpioPinValue.Low);
+
             if (pins[5].Read() == GpioPinValue.High && pins[3].Read() == GpioPinValue.High)
             {
                 pins[5].Write(GpioPinValue.Low);
@@ -81,6 +84,9 @@ namespace R2D2G2
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            pins[5].Write(GpioPinValue.Low);
+            pins[3].Write(GpioPinValue.Low);
+
             if (pins[4].Read() == GpioPinValue.High && pins[2].Read() == GpioPinValue.High)
             {
                 pins[4].Write(GpioPinValue.Low);
