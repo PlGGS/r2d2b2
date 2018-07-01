@@ -20,7 +20,7 @@ namespace R2D2G2
             timer.Interval = TimeSpan.FromMilliseconds(500);
             timer.Tick += Timer_Tick;
             InitGPIO();
-            timer.Start();
+            //timer.Start();
         }
 
         private void InitGPIO()
@@ -62,6 +62,34 @@ namespace R2D2G2
                 }
 
                 Task.Delay(100).Wait();
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (pins[5].Read() == GpioPinValue.High && pins[3].Read() == GpioPinValue.High)
+            {
+                pins[5].Write(GpioPinValue.Low);
+                pins[3].Write(GpioPinValue.Low);
+            }
+            else
+            {
+                pins[5].Write(GpioPinValue.High);
+                pins[3].Write(GpioPinValue.High);
+            }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (pins[4].Read() == GpioPinValue.High && pins[2].Read() == GpioPinValue.High)
+            {
+                pins[4].Write(GpioPinValue.Low);
+                pins[2].Write(GpioPinValue.Low);
+            }
+            else
+            {
+                pins[4].Write(GpioPinValue.High);
+                pins[2].Write(GpioPinValue.High);
             }
         }
     }

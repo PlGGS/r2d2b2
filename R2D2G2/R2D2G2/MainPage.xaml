@@ -9,5 +9,7 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <TextBlock x:Name="txbDebug" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="180" Width="336"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="408,375,0,0" VerticalAlignment="Top" Height="375" Width="413" Click="Button_Click"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="1108,361,0,0" VerticalAlignment="Top" Height="375" Width="413" Click="Button_Click_1"/>
     </Grid>
 </Page>
