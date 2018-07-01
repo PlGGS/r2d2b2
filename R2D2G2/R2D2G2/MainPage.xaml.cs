@@ -1,19 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using Windows.Devices.Gpio;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace R2D2G2
@@ -21,8 +9,8 @@ namespace R2D2G2
 
     public sealed partial class MainPage : Page
     {
-        GpioPin[] pins = new GpioPin[8];
-        int[] relayValues = new int[8] { 6, 12, 13, 19, 16, 26, 20, 21 };
+        GpioPin[] pins = new GpioPin[6];
+        int[] relayValues = new int[6] { 13, 19, 16, 26, 20, 21 };
         DispatcherTimer timer;
 
         public MainPage()
