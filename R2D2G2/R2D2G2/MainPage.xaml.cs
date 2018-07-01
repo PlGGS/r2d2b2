@@ -3,28 +3,58 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.Devices.Gpio;
 using System.Threading.Tasks;
+using Windows.Gaming.Input;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace R2D2G2
 {
 
     public sealed partial class MainPage : Page
     {
-        GpioPin[] pins = new GpioPin[6];
-        int[] relayValues = new int[6] { 13, 19, 16, 26, 20, 21 };
         DispatcherTimer timer;
+        Gamepad controller;
+        Motor lLeg;
+        Motor rLeg;
+        Motor head;
+        public GpioPin[] Pins { get; set; } = new GpioPin[6];
+        public List<Action> Actions { get; set; } = new List<Action>();
 
         public MainPage()
         {
             this.InitializeComponent();
+            
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(500);
             timer.Tick += Timer_Tick;
+
             InitGPIO();
-            //timer.Start();
+            InitMotors();
+            InitActions();
+
+            //IReadOnlyList<Gamepad> gamepads = Gamepad.Gamepads;
+
+            timer.Start();
+        }
+
+        private void InitMotors()
+        {
+            lLeg = new Motor(new List<State>() { new State("Forward", Pins[0]),
+                                                    new State("Backward", Pins[1]) });
+            rLeg = new Motor(new List<State>() { new State("Forward", Pins[2]),
+                                                    new State("Backward", Pins[3]) });
+            head = new Motor(new List<State>() { new State("Left", Pins[4]),
+                                                    new State("Right", Pins[5]) });
+        }
+
+        private void InitActions()
+        {
+
         }
 
         private void InitGPIO()
         {
+            
             var gpio = GpioController.GetDefault();
 
             //Show an error if there is no GPIO controller
@@ -37,65 +67,51 @@ namespace R2D2G2
             //Initialize pins
             txbDebug.Text = $"GPIO pins ";
 
-            for (int i = 0; i < pins.Length; i++)
-            {
-                pins[i] = gpio.OpenPin(relayValues[i]);
-                pins[i].SetDriveMode(GpioPinDriveMode.Output);
-                pins[i].Write(GpioPinValue.High);
-                txbDebug.Text += $"{i} ";
-            }
+            Pins[0] = gpio.OpenPin(13);
+            Pins[1] = gpio.OpenPin(19);
+            Pins[2] = gpio.OpenPin(20);
+            Pins[3] = gpio.OpenPin(21);
+            Pins[4] = gpio.OpenPin(24);
+            Pins[5] = gpio.OpenPin(26);
 
             txbDebug.Text += "initialized properly";
-        }
 
+            /*  
+                    InitPin(tmpPin, pair, item);
+                pins[pin].SetDriveMode(GpioPinDriveMode.Output);
+                txbDebug.Text += $"{pin} ";
+                tmpPin++;
+            */
+        }
+        
         private void Timer_Tick(object sender, object e)
         {
-            for (int i = 0; i < pins.Length; i++)
+            if (Gamepad.Gamepads.Count > 0)
             {
-                if (pins[i].Read() == GpioPinValue.High)
+                if (Gamepad.Gamepads[0] != null)
                 {
-                    pins[i].Write(GpioPinValue.Low);
+                    controller = Gamepad.Gamepads[0];
                 }
-                else
-                {
-                    pins[i].Write(GpioPinValue.High);
-                }
+                var reading = controller.GetCurrentReading();
+                txbDebug.Text = $"{reading} pressed";
 
-                Task.Delay(100).Wait();
+                //pbLeftThumbstickX.Value = reading.LeftThumbstickX;
+                //pbLeftThumbstickY.Value = reading.LeftThumbstickY;
+
+                //https://msdn.microsoft.com/en-us/library/windows/apps/windows.gaming.input.gamepadbuttons.aspx
+                //ChangeVisibility(reading.Buttons.HasFlag(GamepadButtons.A), lblA);
             }
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
+        
+        private void ChangeVisibility(bool flag, UIElement elem)
         {
-            pins[4].Write(GpioPinValue.Low);
-            pins[2].Write(GpioPinValue.Low);
-
-            if (pins[5].Read() == GpioPinValue.High && pins[3].Read() == GpioPinValue.High)
+            if (flag)
             {
-                pins[5].Write(GpioPinValue.Low);
-                pins[3].Write(GpioPinValue.Low);
+                elem.Visibility = Visibility.Visible;
             }
             else
             {
-                pins[5].Write(GpioPinValue.High);
-                pins[3].Write(GpioPinValue.High);
-            }
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            pins[5].Write(GpioPinValue.Low);
-            pins[3].Write(GpioPinValue.Low);
-
-            if (pins[4].Read() == GpioPinValue.High && pins[2].Read() == GpioPinValue.High)
-            {
-                pins[4].Write(GpioPinValue.Low);
-                pins[2].Write(GpioPinValue.Low);
-            }
-            else
-            {
-                pins[4].Write(GpioPinValue.High);
-                pins[2].Write(GpioPinValue.High);
+                elem.Visibility = Visibility.Collapsed;
             }
         }
     }
