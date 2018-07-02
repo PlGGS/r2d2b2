@@ -60,12 +60,12 @@ namespace R2D2G2
             //Initialize pins
             txbDebug.Text = $"GPIO pins ";
 
-            Pins[0] = gpio.OpenPin(13);
-            Pins[1] = gpio.OpenPin(19);
-            Pins[2] = gpio.OpenPin(20);
-            Pins[3] = gpio.OpenPin(21);
-            Pins[4] = gpio.OpenPin(24);
-            Pins[5] = gpio.OpenPin(26);
+            Pins[0] = gpio.OpenPin(6);
+            Pins[1] = gpio.OpenPin(12);
+            Pins[2] = gpio.OpenPin(19);
+            Pins[3] = gpio.OpenPin(16);
+            Pins[4] = gpio.OpenPin(26);
+            Pins[5] = gpio.OpenPin(20);
 
             txbDebug.Text += "initialized properly";
 
