@@ -39,11 +39,11 @@ namespace R2D2G2
 
         private void InitMotors()
         {
-            lLeg = new Motor(new List<State>() { new State("Forward", Pins[0]),
+            head = new Motor(new List<State>() { new State("Forward", Pins[0]),
                                                     new State("Backward", Pins[1]) });
             rLeg = new Motor(new List<State>() { new State("Forward", Pins[2]),
                                                     new State("Backward", Pins[3]) });
-            head = new Motor(new List<State>() { new State("Left", Pins[4]),
+            lLeg = new Motor(new List<State>() { new State("Left", Pins[4]),
                                                     new State("Right", Pins[5]) });
         }
 
@@ -70,7 +70,7 @@ namespace R2D2G2
 
             txbDebug.Text += "initialized properly";
         }
-        
+
         private void Timer_Tick(object sender, object e)
         {
             if (gamepads.Count > 0)
@@ -80,10 +80,23 @@ namespace R2D2G2
                     gamepad = Gamepad.Gamepads[0];
                 }
                 var reading = gamepad.GetCurrentReading();
-                //txbDebug.Text = $"{reading} pressed";
 
                 //pbLeftThumbstickX.Value = reading.LeftThumbstickX;
                 //pbLeftThumbstickY.Value = reading.LeftThumbstickY;
+
+                //make left leg go forward if left stick is pressed forward
+                if (reading.LeftThumbstickY > 50)
+                {
+                    //TODO create easy way to tell lLeg to go forward
+                    Pins[4].Write(GpioPinValue.High);
+                }
+
+                //make right leg go forward if right stick is pressed forward
+                if (reading.RightThumbstickY > 50)
+                {
+                    //TODO create easy way to tell lLeg to go forward
+                    Pins[5].Write(GpioPinValue.High);
+                }
 
                 //https://msdn.microsoft.com/en-us/library/windows/apps/windows.gaming.input.gamepadbuttons.aspx
                 //ChangeVisibility(reading.Buttons.HasFlag(GamepadButtons.A), lblA);
