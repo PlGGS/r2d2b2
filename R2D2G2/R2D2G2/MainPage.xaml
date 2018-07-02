@@ -8,12 +8,12 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <TextBlock x:Name="txbDebug" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="180" Width="336"/>
-        <Button Content="Left" HorizontalAlignment="Left" Margin="10,78,0,0" VerticalAlignment="Top" Height="112" Width="115" Click="Button_Click"/>
-        <Button Content="Right" HorizontalAlignment="Left" Margin="130,78,0,0" VerticalAlignment="Top" Height="112" Width="115" Click="Button_Click_1"/>
-        <Button Content="Backwards" HorizontalAlignment="Left" Margin="322,78,0,0" VerticalAlignment="Top" Height="112" Width="115" Click="Button_Click_2"/>
-        <Button Content="Forwards" HorizontalAlignment="Left" Margin="442,78,0,0" VerticalAlignment="Top" Height="112" Width="115" Click="Button_Click_3"/>
-        <Button Content="Backwards" HorizontalAlignment="Left" Margin="637,78,0,0" VerticalAlignment="Top" Height="112" Width="115" Click="Button_Click_4"/>
-        <Button Content="Forwards" HorizontalAlignment="Left" Margin="757,78,0,0" VerticalAlignment="Top" Height="112" Width="115" Click="Button_Click_5"/>
+        <TextBlock x:Name="txbDebug" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="26" Width="862"/>
+        <Button Name="0" Content="Left" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Height="112" Width="115" Click="Button_Click" Loaded="Button_Loaded" Visibility="Visible"/>
+        <Button Name="1" Content="Right" HorizontalAlignment="Left" Margin="130,41,0,0" VerticalAlignment="Top" Height="112" Width="115" Click="Button_Click" Loaded="Button_Loaded" Visibility="Visible"/>
+        <Button Name="2" Content="Backwards" HorizontalAlignment="Left" Margin="322,41,0,0" VerticalAlignment="Top" Height="112" Width="115" Click="Button_Click" Loaded="Button_Loaded" Visibility="Visible"/>
+        <Button Name="3" Content="Forwards" HorizontalAlignment="Left" Margin="442,41,0,0" VerticalAlignment="Top" Height="112" Width="115" Click="Button_Click" Loaded="Button_Loaded" Visibility="Visible"/>
+        <Button Name="4" Content="Backwards" HorizontalAlignment="Left" Margin="637,41,0,0" VerticalAlignment="Top" Height="112" Width="115" Click="Button_Click" Loaded="Button_Loaded" Visibility="Visible"/>
+        <Button Name="5" Content="Forwards" HorizontalAlignment="Left" Margin="757,41,0,0" VerticalAlignment="Top" Height="112" Width="115" Click="Button_Click" Loaded="Button_Loaded" Visibility="Visible"/>
     </Grid>
 </Page>
