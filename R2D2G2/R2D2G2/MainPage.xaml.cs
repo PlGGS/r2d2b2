@@ -12,14 +12,13 @@ namespace R2D2G2
 
     public sealed partial class MainPage : Page
     {
+        GpioController gpioController;
         DispatcherTimer timer;
         IReadOnlyList<Gamepad> gamepads;
         Gamepad gamepad;
-        Motor lLeg;
-        Motor rLeg;
-        Motor head;
-        public int[] pinNums = { 6, 12, 19, 16, 26, 20 };
-        public GpioPin[] Pins { get; set; } = new GpioPin[6];
+        Head head;
+        RightLeg rLeg;
+        LeftLeg lLeg;
 
         public MainPage()
         {
@@ -39,12 +38,9 @@ namespace R2D2G2
 
         private void InitMotors()
         {
-            head = new Motor(new List<State>() { new State("Forward", Pins[0]),
-                                                    new State("Backward", Pins[1]) });
-            rLeg = new Motor(new List<State>() { new State("Forward", Pins[2]),
-                                                    new State("Backward", Pins[3]) });
-            lLeg = new Motor(new List<State>() { new State("Left", Pins[4]),
-                                                    new State("Right", Pins[5]) });
+            head = new Head(gpioController);
+            rLeg = new RightLeg(gpioController);
+            lLeg = new LeftLeg(gpioController);
         }
 
         private void InitGPIO()
@@ -56,19 +52,19 @@ namespace R2D2G2
                 return;
             }
 
-            var gpio = GpioController.GetDefault();
+            gpioController = GpioController.GetDefault();
 
             //Initialize pins
             txbDebug.Text = $"GPIO pins ";
 
-            for (int i = 0; i < Pins.Length; i++)
+            /*for (int i = 0; i < Pins.Length; i++)
             {
                 Pins[i] = gpio.OpenPin(pinNums[i]);
                 Pins[i].SetDriveMode(GpioPinDriveMode.Output);
                 txbDebug.Text += $"i ";
-            }
+            }*/
 
-            txbDebug.Text += "initialized properly";
+            txbDebug.Text += "no longer initialize on startup (Is this gonna be too slow?)";
         }
 
         private void Timer_Tick(object sender, object e)
@@ -84,18 +80,18 @@ namespace R2D2G2
                 //pbLeftThumbstickX.Value = reading.LeftThumbstickX;
                 //pbLeftThumbstickY.Value = reading.LeftThumbstickY;
 
-                //make left leg go forward if left stick is pressed forward
+                //make left leg go forward if left stick is pressed forwards
                 if (reading.LeftThumbstickY > 50)
                 {
-                    //TODO create easy way to tell lLeg to go forward
-                    Pins[4].Write(GpioPinValue.High);
+                    //TODO create easy way to tell lLeg to go forwards
+                    lLeg.SetState(LeftLeg.States.Forwards);
                 }
 
-                //make right leg go forward if right stick is pressed forward
+                //make right leg go forward if right stick is pressed forwards
                 if (reading.RightThumbstickY > 50)
                 {
-                    //TODO create easy way to tell lLeg to go forward
-                    Pins[5].Write(GpioPinValue.High);
+                    //TODO create easy way to tell lLeg to go forwards
+                    rLeg.SetState(RightLeg.States.Forwards);
                 }
 
                 //https://msdn.microsoft.com/en-us/library/windows/apps/windows.gaming.input.gamepadbuttons.aspx
@@ -110,18 +106,6 @@ namespace R2D2G2
                     Pins[0].Write(GpioPinValue.Low);
                 }*/
             }
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Pins[Convert.ToInt32(Name)].Write(GpioPinValue.High);
-        }
-
-        private void Button_Loaded(object sender, RoutedEventArgs e)
-        {
-#if RELEASE
-            this.Visibility = Visibility.Collapsed;
-#endif
         }
     }
 }

@@ -1,22 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using static System.Collections.IEnumerable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Devices.Gpio;
 
 namespace R2D2G2
 {
-    class Motor
+    public class Motor
     {
-        State state;
-        public State State { get => state; set => state = value; }
-        public List<State> States;
+        protected int State { get; set; }
 
-        public Motor(List<State> pStates)
+        public Motor(int pState = -1) //All Motors default to state -1/Off
         {
-            States = pStates;
-            State = null; //TODO handle null being default State
+            State = pState;
+        }
+
+        protected void TurnOnPin(GpioController gpioController, int pinNum)
+        {
+            GpioPin tmpPin = gpioController.OpenPin(pinNum);
+            tmpPin.Write(GpioPinValue.High);
+        }
+
+        protected void TurnOffPin(GpioController gpioController, int pinNum)
+        {
+            GpioPin tmpPin = gpioController.OpenPin(pinNum);
+            tmpPin.Write(GpioPinValue.Low);
         }
     }
 }
