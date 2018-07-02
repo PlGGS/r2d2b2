@@ -61,17 +61,28 @@ namespace R2D2G2
             txbDebug.Text = $"GPIO pins ";
 
             Pins[0] = gpio.OpenPin(6);
+            Pins[0].SetDriveMode(GpioPinDriveMode.Output);
+            txbDebug.Text += $"0 ";
             Pins[1] = gpio.OpenPin(12);
+            Pins[1].SetDriveMode(GpioPinDriveMode.Output);
+            txbDebug.Text += $"1 ";
             Pins[2] = gpio.OpenPin(19);
+            Pins[2].SetDriveMode(GpioPinDriveMode.Output);
+            txbDebug.Text += $"2 ";
             Pins[3] = gpio.OpenPin(16);
+            Pins[3].SetDriveMode(GpioPinDriveMode.Output);
+            txbDebug.Text += $"3 ";
             Pins[4] = gpio.OpenPin(26);
+            Pins[4].SetDriveMode(GpioPinDriveMode.Output);
+            txbDebug.Text += $"4 ";
             Pins[5] = gpio.OpenPin(20);
+            Pins[5].SetDriveMode(GpioPinDriveMode.Output);
+            txbDebug.Text += $"5 ";
 
             txbDebug.Text += "initialized properly";
 
             /*  
                     InitPin(tmpPin, pair, item);
-                pins[pin].SetDriveMode(GpioPinDriveMode.Output);
                 txbDebug.Text += $"{pin} ";
                 tmpPin++;
             */
@@ -86,7 +97,7 @@ namespace R2D2G2
                     controller = Gamepad.Gamepads[0];
                 }
                 var reading = controller.GetCurrentReading();
-                txbDebug.Text = $"{reading} pressed";
+                //txbDebug.Text = $"{reading} pressed";
 
                 //pbLeftThumbstickX.Value = reading.LeftThumbstickX;
                 //pbLeftThumbstickY.Value = reading.LeftThumbstickY;
@@ -105,6 +116,78 @@ namespace R2D2G2
             else
             {
                 elem.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (Pins[0].Read() == GpioPinValue.Low)
+            {
+                Pins[0].Write(GpioPinValue.High);
+            }
+            else
+            {
+                Pins[0].Write(GpioPinValue.Low);
+            }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (Pins[1].Read() == GpioPinValue.Low)
+            {
+                Pins[1].Write(GpioPinValue.High);
+            }
+            else
+            {
+                Pins[1].Write(GpioPinValue.Low);
+            }
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            if (Pins[2].Read() == GpioPinValue.Low)
+            {
+                Pins[2].Write(GpioPinValue.High);
+            }
+            else
+            {
+                Pins[2].Write(GpioPinValue.Low);
+            }
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            if (Pins[3].Read() == GpioPinValue.Low)
+            {
+                Pins[3].Write(GpioPinValue.High);
+            }
+            else
+            {
+                Pins[3].Write(GpioPinValue.Low);
+            }
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            if (Pins[4].Read() == GpioPinValue.Low)
+            {
+                Pins[4].Write(GpioPinValue.High);
+            }
+            else
+            {
+                Pins[4].Write(GpioPinValue.Low);
+            }
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            if (Pins[5].Read() == GpioPinValue.Low)
+            {
+                Pins[5].Write(GpioPinValue.High);
+            }
+            else
+            {
+                Pins[5].Write(GpioPinValue.Low);
             }
         }
     }
