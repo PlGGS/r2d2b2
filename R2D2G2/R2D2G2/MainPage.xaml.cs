@@ -47,15 +47,14 @@ namespace R2D2G2
 
         private void InitGPIO()
         {
-            
-            var gpio = GpioController.GetDefault();
-
             //Show an error if there is no GPIO controller
-            if (gpio == null)
+            if (GpioController.GetDefault() == null)
             {
                 txbDebug.Text = "There is no GPIO controller on this device";
                 return;
             }
+
+            var gpio = GpioController.GetDefault();
 
             //Initialize pins
             txbDebug.Text = $"GPIO pins ";
