@@ -81,14 +81,14 @@ namespace R2D2G2
                 //pbLeftThumbstickY.Value = reading.LeftThumbstickY;
 
                 //make left leg go forward if left stick is pressed forwards
-                if (reading.LeftThumbstickY > 50)
+                if (reading.Buttons == GamepadButtons.A)
                 {
                     //TODO create easy way to tell lLeg to go forwards
                     lLeg.SetState(LeftLeg.States.Forwards);
                 }
 
                 //make right leg go forward if right stick is pressed forwards
-                if (reading.RightThumbstickY > 50)
+                if (reading.Buttons == GamepadButtons.B)
                 {
                     //TODO create easy way to tell lLeg to go forwards
                     rLeg.SetState(RightLeg.States.Forwards);
