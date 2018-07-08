@@ -15,26 +15,28 @@ namespace R2D2G2
             Forwards = 26,
             Backwards = 20
         }
-        GpioController gpioController;
 
-        public LeftLeg(GpioController pGpioController, States pState = States.Off) : base((int)pState)
+        public LeftLeg(GpioController pGpioController, States pState = States.Off) : base(pGpioController, (int)pState)
         {
-            gpioController = pGpioController;
+            for (int i = 1; i < Enum.GetNames(typeof(States)).Length; i++)
+            {
+                Pins[((int[])Enum.GetValues(typeof(States)))[i]] = (gpioController.OpenPin(((int[])Enum.GetValues(typeof(States)))[i]));
+            }
         }
 
         public void SetState(States state)
         {
             State = (int)state;
 
-            for (int i = 0; i < Enum.GetNames(typeof(States)).Length; i++)
+            for (int i = 1; i < Enum.GetNames(typeof(States)).Length; i++)
             {                                                           //Why did I need to cast this and not the other part?
-                if (!(Enum.GetNames(typeof(States))[i] == "Off") && !(((int[])Enum.GetValues(typeof(States)))[i] == State))
+                if (!(((int[])Enum.GetValues(typeof(States)))[i] == State))
                 {
-                    TurnOffPin(gpioController, i);
+                    TurnOffPin(((int[])Enum.GetValues(typeof(States)))[i]);
                 }
             }
 
-            TurnOnPin(gpioController, State);
+            TurnOnPin(State);
         }
     }
 }

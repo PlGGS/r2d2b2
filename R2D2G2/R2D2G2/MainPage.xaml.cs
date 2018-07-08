@@ -77,9 +77,6 @@ namespace R2D2G2
                 }
                 var reading = gamepad.GetCurrentReading();
 
-                //pbLeftThumbstickX.Value = reading.LeftThumbstickX;
-                //pbLeftThumbstickY.Value = reading.LeftThumbstickY;
-
                 //make left leg go forward if left stick is pressed forwards
                 if (reading.LeftThumbstickY > 50)
                 {
@@ -93,9 +90,6 @@ namespace R2D2G2
                     //TODO create easy way to tell lLeg to go forwards
                     rLeg.SetState(RightLeg.States.Forwards);
                 }
-
-                //https://msdn.microsoft.com/en-us/library/windows/apps/windows.gaming.input.gamepadbuttons.aspx
-                //ChangeVisibility(reading.Buttons.HasFlag(GamepadButtons.A), lblA);
 
                 /*if (Pins[0].Read() == GpioPinValue.Low)
                 {
