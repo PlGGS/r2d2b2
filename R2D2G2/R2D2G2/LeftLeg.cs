@@ -29,7 +29,7 @@ namespace R2D2G2
             State = (int)state;
 
             for (int i = 1; i < Enum.GetNames(typeof(States)).Length; i++)
-            {                                                           //Why did I need to cast this and not the other part?
+            {
                 if (!(((int[])Enum.GetValues(typeof(States)))[i] == State))
                 {
                     TurnOffPin(((int[])Enum.GetValues(typeof(States)))[i]);

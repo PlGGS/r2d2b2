@@ -20,7 +20,7 @@ namespace R2D2G2
         {
             for (int i = 1; i < Enum.GetNames(typeof(States)).Length; i++)
             {
-                Pins.Add(gpioController.OpenPin(((int[])Enum.GetValues(typeof(States)))[i]));
+                Pins[((int[])Enum.GetValues(typeof(States)))[i]] = (gpioController.OpenPin(((int[])Enum.GetValues(typeof(States)))[i]));
             }
         }
 
@@ -28,9 +28,9 @@ namespace R2D2G2
         {
             State = (int)state;
 
-            for (int i = 0; i < Enum.GetNames(typeof(States)).Length; i++)
-            {                                                           //Why did I need to cast this and not the other part?
-                if (!(Enum.GetNames(typeof(States))[i] == "Off") && !(((int[])Enum.GetValues(typeof(States)))[i] == State))
+            for (int i = 1; i < Enum.GetNames(typeof(States)).Length; i++)
+            {
+                if (!(((int[])Enum.GetValues(typeof(States)))[i] == State))
                 {
                     TurnOffPin(((int[])Enum.GetValues(typeof(States)))[i]);
                 }
