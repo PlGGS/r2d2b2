@@ -17,6 +17,7 @@ namespace R2D2G2
         DispatcherTimer timer;
         readonly List<Gamepad> gamepads;
         Gamepad gamepad;
+        double gamepadDeadZone = 0.1;
         Head head;
         RightLeg rLeg;
         LeftLeg lLeg;
@@ -26,7 +27,7 @@ namespace R2D2G2
             this.InitializeComponent();
 
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(500);
+            timer.Interval = TimeSpan.FromMilliseconds(50);
             timer.Tick += Timer_Tick;
 
             InitGPIO();
@@ -71,7 +72,7 @@ namespace R2D2G2
 
         private void Gamepad_GamepadAdded(object sender, Gamepad e)
         {
-            gamepads.Add(Gamepad.Gamepads?.First());
+            gamepad = Gamepad.Gamepads[0];
         }
 
         private void Timer_Tick(object sender, object e)
@@ -80,18 +81,14 @@ namespace R2D2G2
 
             if (gamepads.Count > 0)
             {
-                if (gamepads[0] != null)
-                {
-                    gamepad = Gamepad.Gamepads[0];
-                }
                 var reading = gamepad.GetCurrentReading();
 
                 //make left leg go forward if left stick is pressed forwards
-                if (reading.LeftThumbstickY > 0.25)
+                if (reading.LeftThumbstickY > gamepadDeadZone)
                 {
                     lLeg.SetState(LeftLeg.States.Forwards);
                 }
-                else if (reading.LeftThumbstickY < -0.25)
+                else if (reading.LeftThumbstickY < -gamepadDeadZone)
                 {
                     lLeg.SetState(LeftLeg.States.Backwards);
                 }
@@ -101,11 +98,11 @@ namespace R2D2G2
                 }
 
                 //make right leg go forward if right stick is pressed forwards
-                if (reading.RightThumbstickY > 0.25)
+                if (reading.RightThumbstickY > gamepadDeadZone)
                 {
                     rLeg.SetState(RightLeg.States.Forwards);
                 }
-                else if (reading.RightThumbstickY < -0.25)
+                else if (reading.RightThumbstickY < -gamepadDeadZone)
                 {
                     rLeg.SetState(RightLeg.States.Backwards);
                 }
