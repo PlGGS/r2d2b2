@@ -16,8 +16,7 @@ namespace R2D2G2
         GpioController gpioController;
         DispatcherTimer timer;
         readonly List<Gamepad> gamepads;
-        Gamepad gamepad;
-        double gamepadDeadZone = 0.1;
+        double gamepadDeadZone = 0.15;
         Head head;
         RightLeg rLeg;
         LeftLeg lLeg;
@@ -35,10 +34,11 @@ namespace R2D2G2
 
             gamepads = new List<Gamepad>();
             Gamepad.GamepadAdded += Gamepad_GamepadAdded;
+            Gamepad.GamepadRemoved += Gamepad_GamepadRemoved;
 
             timer.Start();
         }
-
+        
         private void InitMotors()
         {
             head = new Head(gpioController);
@@ -72,20 +72,27 @@ namespace R2D2G2
 
         private void Gamepad_GamepadAdded(object sender, Gamepad e)
         {
-            gamepads.Add(Gamepad.Gamepads?.First());
+            gamepads.Add(e);
+            lLeg.Gamepads = gamepads;
+            rLeg.Gamepads = gamepads;
+            head.Gamepads = gamepads;
+        }
+
+        private void Gamepad_GamepadRemoved(object sender, Gamepad e)
+        {
+            gamepads.Remove(e);
+            lLeg.Gamepads = gamepads;
+            rLeg.Gamepads = gamepads;
+            head.Gamepads = gamepads;
         }
 
         private void Timer_Tick(object sender, object e)
         {
-            txbDebug.Text = gamepads.Count.ToString();
+            //txbDebug.Text = gamepads.Count.ToString();
 
             if (gamepads.Count > 0)
             {
-                if (gamepads[0] != null)
-                {
-                    gamepad = Gamepad.Gamepads[0];
-                }
-                var reading = gamepad.GetCurrentReading();
+                var reading = gamepads[0].GetCurrentReading();
 
                 //make left leg go forward if left stick is pressed forwards
                 if (reading.LeftThumbstickY > gamepadDeadZone)

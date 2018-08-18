@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Devices.Gpio;
+using Windows.Gaming.Input;
 
 namespace R2D2G2
 {
@@ -15,6 +16,7 @@ namespace R2D2G2
             Forwards = 20, //GPIO26
             Backwards = 26 //GPIO20
         }
+        public List<Gamepad> Gamepads = new List<Gamepad>();
 
         public LeftLeg(GpioController pGpioController, States pState = States.Off) : base(pGpioController, (int)pState)
         {
@@ -28,8 +30,15 @@ namespace R2D2G2
 
         public void SetState(States state)
         {
-            State = (int)state;
-            SetPinState((States)State);
+            if (Gamepads.Count > 0)
+            {
+                State = (int)state;
+                SetPinState((States)State);
+            }
+            else
+            {
+                SetPinState(States.Off);
+            }
         }
 
         private void SetPinState(States state)
