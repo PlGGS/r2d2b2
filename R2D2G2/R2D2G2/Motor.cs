@@ -13,7 +13,7 @@ namespace R2D2G2
         protected int State { get; set; }
         public GpioPin[] Pins { get; set; }
 
-        public Motor(GpioController pGpioController, int pState = -1) //All Motors default to state -1/Off
+        public Motor(GpioController pGpioController, int pState = 0) //All Motors default to state -1/Off
         {
             gpioController = pGpioController;
             State = pState;
@@ -22,7 +22,7 @@ namespace R2D2G2
 
         protected void TurnOnPin(int pinNum)
         {
-            if (pinNum != 30)
+            if (pinNum != 0)
             {
                 Pins[pinNum].Write(GpioPinValue.High);
             }
@@ -30,9 +30,16 @@ namespace R2D2G2
 
         protected void TurnOffPin(int pinNum)
         {
-            if (pinNum != 30)
+            if (pinNum != 0)
             {
                 Pins[pinNum].Write(GpioPinValue.Low);
+            }
+            else
+            {
+                foreach (GpioPin pin in Pins)
+                {
+                    Pins[pinNum].Write(GpioPinValue.Low);
+                }
             }
         }
     }

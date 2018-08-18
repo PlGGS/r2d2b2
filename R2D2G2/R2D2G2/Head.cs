@@ -12,8 +12,8 @@ namespace R2D2G2
         public enum States
         {
             Off = 0,
-            Left = 37, //GPIO6
-            Right = 32 //GPIO12
+            Left = 6, //GPIO6
+            Right = 12 //GPIO12
         }
 
         public Head(GpioController pGpioController, States pState = States.Off) : base(pGpioController, (int)pState)

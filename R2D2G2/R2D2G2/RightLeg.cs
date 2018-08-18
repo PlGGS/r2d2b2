@@ -12,8 +12,8 @@ namespace R2D2G2
         public enum States
         {
             Off = 0,
-            Forwards = 35, //GPIO19
-            Backwards = 36 //GPIO16
+            Forwards = 10, //GPIO19
+            Backwards = 16 //GPIO16
         }
 
         public RightLeg(GpioController pGpioController, States pState = States.Off) : base(pGpioController, (int)pState)
