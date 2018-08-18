@@ -12,8 +12,8 @@ namespace R2D2G2
         public enum States
         {
             Off = 0,
-            Forwards = 26, //GPIO26
-            Backwards = 20 //GPIO20
+            Forwards = 20, //GPIO26
+            Backwards = 26 //GPIO20
         }
 
         public LeftLeg(GpioController pGpioController, States pState = States.Off) : base(pGpioController, (int)pState)
@@ -29,16 +29,28 @@ namespace R2D2G2
         public void SetState(States state)
         {
             State = (int)state;
+            SetPinState((States)State);
+        }
 
-            for (int i = 1; i < Enum.GetNames(typeof(States)).Length; i++)
+        private void SetPinState(States state)
+        {
+            switch (state)
             {
-                if (!(((int[])Enum.GetValues(typeof(States)))[i] == State))
-                {
-                    TurnOffPin(((int[])Enum.GetValues(typeof(States)))[i]);
-                }
+                case States.Off:
+                    Pins[(int)States.Forwards].Write(GpioPinValue.High);
+                    Pins[(int)States.Backwards].Write(GpioPinValue.High);
+                    break;
+                case States.Forwards:
+                    Pins[(int)States.Backwards].Write(GpioPinValue.High);
+                    Pins[(int)States.Forwards].Write(GpioPinValue.Low);
+                    break;
+                case States.Backwards:
+                    Pins[(int)States.Forwards].Write(GpioPinValue.High);
+                    Pins[(int)States.Backwards].Write(GpioPinValue.Low);
+                    break;
+                default:
+                    break;
             }
-
-            TurnOnPin(State);
         }
     }
 }

@@ -29,16 +29,28 @@ namespace R2D2G2
         public void SetState(States state)
         {
             State = (int)state;
+            SetPinState((States)State);
+        }
 
-            for (int i = 1; i < Enum.GetNames(typeof(States)).Length; i++)
+        private void SetPinState(States state)
+        {
+            switch (state)
             {
-                if (!(((int[])Enum.GetValues(typeof(States)))[i] == State))
-                {
-                    TurnOffPin(((int[])Enum.GetValues(typeof(States)))[i]);
-                }
+                case States.Off:
+                    Pins[(int)States.Left].Write(GpioPinValue.High);
+                    Pins[(int)States.Right].Write(GpioPinValue.High);
+                    break;
+                case States.Left:
+                    Pins[(int)States.Left].Write(GpioPinValue.High);
+                    Pins[(int)States.Right].Write(GpioPinValue.Low);
+                    break;
+                case States.Right:
+                    Pins[(int)States.Left].Write(GpioPinValue.High);
+                    Pins[(int)States.Right].Write(GpioPinValue.Low);
+                    break;
+                default:
+                    break;
             }
-
-            TurnOnPin(State);
         }
     }
 }
