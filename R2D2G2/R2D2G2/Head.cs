@@ -11,7 +11,7 @@ namespace R2D2G2
     {
         public enum States
         {
-            Off = 0,
+            Off = -1,
             Left = 6,
             Right = 12
         }
@@ -20,7 +20,10 @@ namespace R2D2G2
         {
             for (int i = 1; i < Enum.GetNames(typeof(States)).Length; i++)
             {
-                Pins[((int[])Enum.GetValues(typeof(States)))[i]] = (gpioController.OpenPin(((int[])Enum.GetValues(typeof(States)))[i]));
+                if (Pins != null)
+                {
+                    Pins.Add(gpioController.OpenPin(((int[])Enum.GetValues(typeof(States)))[i]));
+                }
             }
         }
 

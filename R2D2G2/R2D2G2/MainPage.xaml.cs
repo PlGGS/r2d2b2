@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Windows.Gaming.Input;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
 
 namespace R2D2G2
 {
@@ -14,7 +15,7 @@ namespace R2D2G2
     {
         GpioController gpioController;
         DispatcherTimer timer;
-        IReadOnlyList<Gamepad> gamepads;
+        readonly List<Gamepad> gamepads;
         Gamepad gamepad;
         Head head;
         RightLeg rLeg;
@@ -31,7 +32,8 @@ namespace R2D2G2
             InitGPIO();
             InitMotors();
 
-            gamepads = Gamepad.Gamepads;
+            gamepads = new List<Gamepad>();
+            Gamepad.GamepadAdded += Gamepad_GamepadAdded;
 
             timer.Start();
         }
@@ -67,8 +69,15 @@ namespace R2D2G2
             txbDebug.Text += "no longer initialize on startup (Is this gonna be too slow?)";
         }
 
+        private void Gamepad_GamepadAdded(object sender, Gamepad e)
+        {
+            gamepads.Add(Gamepad.Gamepads?.First());
+        }
+
         private void Timer_Tick(object sender, object e)
         {
+            txbDebug.Text = gamepads.Count.ToString();
+
             if (gamepads.Count > 0)
             {
                 if (gamepads[0] != null)
