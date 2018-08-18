@@ -11,16 +11,18 @@ namespace R2D2G2
     {
         public enum States
         {
-            Off = 1,
-            Forwards = 26,
-            Backwards = 20
+            Off = 0,
+            Forwards = 37, //GPIO26
+            Backwards = 38 //GPIO20
         }
 
         public LeftLeg(GpioController pGpioController, States pState = States.Off) : base(pGpioController, (int)pState)
         {
             for (int i = 1; i < Enum.GetNames(typeof(States)).Length; i++)
             {
-                Pins.Add(gpioController.OpenPin(((int[])Enum.GetValues(typeof(States)))[i]));
+                var values = ((int[])Enum.GetValues(typeof(States)));
+                Pins[values[i]] = gpioController.OpenPin(values[i]);
+                Pins[values[i]].SetDriveMode(GpioPinDriveMode.Output);
             }
         }
 

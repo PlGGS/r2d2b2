@@ -89,15 +89,33 @@ namespace R2D2G2
                 //make left leg go forward if left stick is pressed forwards
                 if (reading.Buttons == GamepadButtons.A)
                 {
+                    lLeg.Pins[20].Write(GpioPinValue.Low);
+                    rLeg.Pins[16].Write(GpioPinValue.Low);
+                    head.Pins[12].Write(GpioPinValue.Low);
                     //TODO create easy way to tell lLeg to go forwards
-                    lLeg.SetState(LeftLeg.States.Forwards);
+                    //lLeg.SetState(LeftLeg.States.Forwards);
+                    lLeg.Pins[26].Write(GpioPinValue.High);
+                    rLeg.Pins[19].Write(GpioPinValue.High);
+                    head.Pins[6].Write(GpioPinValue.High);
+                    txbDebug.Text = lLeg.Pins[26].PinNumber.ToString() + " ";
+                    txbDebug.Text += rLeg.Pins[19].PinNumber.ToString() + " ";
+                    txbDebug.Text += head.Pins[6].PinNumber.ToString() + " ";
                 }
 
                 //make right leg go forward if right stick is pressed forwards
                 if (reading.Buttons == GamepadButtons.B)
                 {
+                    lLeg.Pins[26].Write(GpioPinValue.Low);
+                    rLeg.Pins[19].Write(GpioPinValue.Low);
+                    head.Pins[6].Write(GpioPinValue.Low);
                     //TODO create easy way to tell lLeg to go forwards
-                    rLeg.SetState(RightLeg.States.Forwards);
+                    //rLeg.SetState(RightLeg.States.Forwards);
+                    lLeg.Pins[20].Write(GpioPinValue.High);
+                    rLeg.Pins[16].Write(GpioPinValue.High);
+                    head.Pins[12].Write(GpioPinValue.High);
+                    txbDebug.Text = lLeg.Pins[20].PinNumber.ToString() + " ";
+                    txbDebug.Text += rLeg.Pins[16].PinNumber.ToString() + " ";
+                    txbDebug.Text += head.Pins[12].PinNumber.ToString() + " ";
                 }
 
                 /*if (Pins[0].Read() == GpioPinValue.Low)
