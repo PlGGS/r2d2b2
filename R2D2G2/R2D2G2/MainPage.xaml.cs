@@ -72,7 +72,7 @@ namespace R2D2G2
 
         private void Gamepad_GamepadAdded(object sender, Gamepad e)
         {
-            gamepad = Gamepad.Gamepads[0];
+            gamepads.Add(Gamepad.Gamepads?.First());
         }
 
         private void Timer_Tick(object sender, object e)
@@ -81,6 +81,10 @@ namespace R2D2G2
 
             if (gamepads.Count > 0)
             {
+                if (gamepads[0] != null)
+                {
+                    gamepad = Gamepad.Gamepads[0];
+                }
                 var reading = gamepad.GetCurrentReading();
 
                 //make left leg go forward if left stick is pressed forwards
