@@ -84,6 +84,9 @@ namespace R2D2G2
             lLeg.Gamepads = gamepads;
             rLeg.Gamepads = gamepads;
             head.Gamepads = gamepads;
+            lLeg.SetState(LeftLeg.States.Off);
+            rLeg.SetState(RightLeg.States.Off);
+            head.SetState(Head.States.Off);
         }
 
         private void Timer_Tick(object sender, object e)
