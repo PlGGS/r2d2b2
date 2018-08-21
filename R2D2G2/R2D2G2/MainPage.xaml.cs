@@ -7,6 +7,9 @@ using Windows.Gaming.Input;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
+using Windows.Storage;
+using Windows.Storage.Streams;
+using Windows.Storage.Search;
 
 namespace R2D2G2
 {
@@ -20,7 +23,8 @@ namespace R2D2G2
         Head head;
         RightLeg rLeg;
         LeftLeg lLeg;
-
+        List<MediaElement> soundEffects;
+        
         public MainPage()
         {
             this.InitializeComponent();
@@ -31,6 +35,7 @@ namespace R2D2G2
 
             InitGPIO();
             InitMotors();
+            InitSoundEffects();
 
             gamepads = new List<Gamepad>();
             Gamepad.GamepadAdded += Gamepad_GamepadAdded;
@@ -38,7 +43,33 @@ namespace R2D2G2
 
             timer.Start();
         }
-        
+
+        private async void InitSoundEffects()
+        {
+            soundEffects = new List<MediaElement>();
+            StorageFolder assetsFolder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("Assets");
+            List<StorageFile> audioFiles = new List<StorageFile>();
+
+            //Get all audio files in assets folder
+            for (int f = 0; f < (await assetsFolder.GetFilesAsync(CommonFileQuery.OrderByName)).Count; f++)
+            {
+                StorageFile file = (await assetsFolder.GetFilesAsync(CommonFileQuery.OrderByName))[f];
+
+                if (file.ContentType == "audio/wav" || file.ContentType == "audio/mp3")
+                {
+                    audioFiles.Add(file);
+                }
+            }
+
+            //Add audio files to soundEffects List
+            for (int e = 0; e < audioFiles.Count; e++)
+            {
+                soundEffects.Add(new MediaElement());
+                IRandomAccessStream stream = await audioFiles[e].OpenAsync(FileAccessMode.Read);
+                soundEffects[e].SetSource(stream, audioFiles[e].ContentType);
+            }
+        }
+
         private void InitMotors()
         {
             head = new Head(gpioController);
