@@ -24,6 +24,7 @@ namespace R2D2G2
         RightLeg rLeg;
         LeftLeg lLeg;
         List<MediaElement> soundEffects;
+        Random rnd = new Random();
         
         public MainPage()
         {
@@ -58,6 +59,7 @@ namespace R2D2G2
                 if (file.ContentType == "audio/wav" || file.ContentType == "audio/mp3")
                 {
                     audioFiles.Add(file);
+                    txbDebug.Text = file.Name;
                 }
             }
 
@@ -87,18 +89,6 @@ namespace R2D2G2
             }
 
             gpioController = GpioController.GetDefault();
-
-            //Initialize pins
-            txbDebug.Text = $"GPIO pins ";
-
-            /*for (int i = 0; i < Pins.Length; i++)
-            {
-                Pins[i] = gpio.OpenPin(pinNums[i]);
-                Pins[i].SetDriveMode(GpioPinDriveMode.Output);
-                txbDebug.Text += $"i ";
-            }*/
-
-            txbDebug.Text += "no longer initialize on startup (Is this gonna be too slow?)";
         }
 
         private void Gamepad_GamepadAdded(object sender, Gamepad e)
@@ -154,6 +144,16 @@ namespace R2D2G2
                 else
                 {
                     rLeg.SetState(RightLeg.States.Off);
+                }
+
+                //Audio playing section
+                if (soundEffects.Count > 0)
+                {
+                    if (reading.Buttons == GamepadButtons.A)
+                    {
+                        int r = rnd.Next(0, soundEffects.Count - 1);
+                        soundEffects[r].Play();
+                    }
                 }
             }
         }
