@@ -54,8 +54,8 @@ namespace R2D2G2
                     Pins[(int)States.Right].Write(GpioPinValue.Low);
                     break;
                 case States.Right:
-                    Pins[(int)States.Left].Write(GpioPinValue.High);
-                    Pins[(int)States.Right].Write(GpioPinValue.Low);
+                    Pins[(int)States.Right].Write(GpioPinValue.High);
+                    Pins[(int)States.Left].Write(GpioPinValue.Low);
                     break;
                 default:
                     break;

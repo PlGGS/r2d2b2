@@ -2,11 +2,8 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.Devices.Gpio;
-using System.Threading.Tasks;
 using Windows.Gaming.Input;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Linq;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.Storage.Search;
@@ -144,6 +141,20 @@ namespace R2D2G2
                 else
                 {
                     rLeg.SetState(RightLeg.States.Off);
+                }
+                
+                //make head go left and right depending on which bumber is pressed
+                if (reading.Buttons == GamepadButtons.LeftShoulder)
+                {
+                    head.SetState(Head.States.Left);
+                }
+                else if (reading.Buttons == GamepadButtons.RightShoulder)
+                {
+                    head.SetState(Head.States.Right);
+                }
+                else
+                {
+                    head.SetState(Head.States.Off);
                 }
 
                 //Audio playing section
