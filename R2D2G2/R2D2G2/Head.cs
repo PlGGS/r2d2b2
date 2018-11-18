@@ -16,7 +16,6 @@ namespace R2D2G2
             Left = 6, //GPIO6
             Right = 12 //GPIO12
         }
-        public List<Gamepad> Gamepads = new List<Gamepad>();
 
         public Head(GpioController pGpioController, States pState = States.Off) : base(pGpioController, (int)pState)
         {

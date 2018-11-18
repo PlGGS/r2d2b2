@@ -16,7 +16,6 @@ namespace R2D2G2
             Forwards = 20, //GPIO26
             Backwards = 26 //GPIO20
         }
-        public List<Gamepad> Gamepads = new List<Gamepad>();
 
         public LeftLeg(GpioController pGpioController, States pState = States.Off) : base(pGpioController, (int)pState)
         {

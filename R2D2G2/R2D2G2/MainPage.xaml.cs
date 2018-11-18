@@ -7,10 +7,10 @@ using System.Collections.Generic;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.Storage.Search;
+using System.Threading.Tasks;
 
 namespace R2D2G2
 {
-
     public sealed partial class MainPage : Page
     {
         GpioController gpioController;
@@ -20,6 +20,7 @@ namespace R2D2G2
         Head head;
         RightLeg rLeg;
         LeftLeg lLeg;
+        Motor[] motors = new Motor[3];
         List<MediaElement> soundEffects;
         Random rnd = new Random();
         
@@ -72,8 +73,11 @@ namespace R2D2G2
         private void InitMotors()
         {
             head = new Head(gpioController);
+            motors[0] = head;
             rLeg = new RightLeg(gpioController);
+            motors[1] = rLeg;
             lLeg = new LeftLeg(gpioController);
+            motors[2] = lLeg;
         }
 
         private void InitGPIO()
@@ -91,17 +95,22 @@ namespace R2D2G2
         private void Gamepad_GamepadAdded(object sender, Gamepad e)
         {
             gamepads.Add(e);
-            lLeg.Gamepads = gamepads;
-            rLeg.Gamepads = gamepads;
-            head.Gamepads = gamepads;
+
+            foreach (Motor motor in motors)
+            {
+                motor.Gamepads = gamepads;
+            }
         }
 
         private void Gamepad_GamepadRemoved(object sender, Gamepad e)
         {
             gamepads.Remove(e);
-            lLeg.Gamepads = gamepads;
-            rLeg.Gamepads = gamepads;
-            head.Gamepads = gamepads;
+
+            foreach (Motor motor in motors)
+            {
+                motor.Gamepads = gamepads;
+            }
+
             lLeg.SetState(LeftLeg.States.Off);
             rLeg.SetState(RightLeg.States.Off);
             head.SetState(Head.States.Off);
@@ -160,13 +169,32 @@ namespace R2D2G2
                 //Audio playing section
                 if (soundEffects.Count > 0)
                 {
+                    int r = rnd.Next(0, soundEffects.Count - 1);
+
                     if (reading.Buttons == GamepadButtons.A)
                     {
-                        int r = rnd.Next(0, soundEffects.Count - 1);
                         soundEffects[r].Play();
+                        Task.Delay(TimeSpan.FromSeconds(Convert.ToDouble(soundEffects[r].NaturalDuration)));
+                    }
+                    else if (reading.Buttons == GamepadButtons.B)
+                    {
+                        soundEffects[r].Play();
+                        Task.Delay(TimeSpan.FromSeconds(Convert.ToDouble(soundEffects[r].NaturalDuration)));
+                    }
+                    else if (reading.Buttons == GamepadButtons.X)
+                    {
+                        soundEffects[r].Play();
+                        Task.Delay(TimeSpan.FromSeconds(Convert.ToDouble(soundEffects[r].NaturalDuration)));
+                    }
+                    else if (reading.Buttons == GamepadButtons.Y)
+                    {
+                        soundEffects[r].Play();
+                        Task.Delay(TimeSpan.FromSeconds(Convert.ToDouble(soundEffects[r].NaturalDuration)));
                     }
                 }
             }
         }
+        
+        
     }
 }
