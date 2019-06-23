@@ -147,7 +147,7 @@
     <Content Include="Assets\omg-no.wav" />
     <Content Include="Assets\ooh-what-is-that.wav" />
     <Content Include="Assets\pew.wav" />
-    <Content Include="Assets\probably not.wav" />
+    <Content Include="Assets\probably-not.wav" />
     <Content Include="Assets\sad.wav" />
     <Content Include="Assets\scream.wav" />
     <Content Include="Assets\scream1.wav" />
@@ -195,7 +195,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.2</Version>
+      <Version>6.2.8</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />

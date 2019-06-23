@@ -20,39 +20,47 @@ namespace R2D2B2
             response.Response = new ResponseBody();
             response.Response.ShouldEndSession = false;
             IOutputSpeech innerResponse = null;
-            var log = context.Logger;
-
+            ILambdaLogger log = context.Logger;
+            string version = "v1.0.0";
 
             if (input.GetRequestType() == typeof(LaunchRequest))
             {
-                log.LogLine($"Default LaunchRequest made: 'Alexa, launch R2D2B2");
+                log.LogLine($"Default LaunchRequest made: 'Alexa, run blake bot");
+
                 innerResponse = new PlainTextOutputSpeech();
-                (innerResponse as PlainTextOutputSpeech).Text = "Successfully launched R2";
+                (innerResponse as PlainTextOutputSpeech).Text = $"Beep boop beep bop. I am R2D2 {version}";
             }
             else if (input.GetRequestType() == typeof(IntentRequest))
             {
-                var intentRequest = (IntentRequest)input.Request;
+                IntentRequest intentRequest = (IntentRequest)input.Request;
                 switch (intentRequest.Intent.Name)
                 {
                     case "AMAZON.CancelIntent":
                         log.LogLine($"AMAZON.CancelIntent: send StopMessage");
                         innerResponse = new PlainTextOutputSpeech();
                         (innerResponse as PlainTextOutputSpeech).Text = "Cancelled";
-                        response.Response.ShouldEndSession = true;
-                        break;
-                    case "AMAZON.StopIntent":
-                        log.LogLine($"AMAZON.StopIntent: send StopMessage");
-                        innerResponse = new PlainTextOutputSpeech();
-                        (innerResponse as PlainTextOutputSpeech).Text = "Cancelled";
-                        response.Response.ShouldEndSession = true;
+                        response.Response.ShouldEndSession = false;
                         break;
                     case "AMAZON.HelpIntent":
                         log.LogLine($"AMAZON.HelpIntent: send HelpMessage");
                         innerResponse = new PlainTextOutputSpeech();
                         (innerResponse as PlainTextOutputSpeech).Text = "Placeholder help message";
+                        response.Response.ShouldEndSession = false;
+                        break;
+                    case "AMAZON.StopIntent":
+                        log.LogLine($"AMAZON.StopIntent: send StopMessage");
+                        innerResponse = new PlainTextOutputSpeech();
+                        (innerResponse as PlainTextOutputSpeech).Text = "Cancelled";
+                        response.Response.ShouldEndSession = false;
+                        break;
+                    case "AMAZON.NavigateHomeIntent":
+                        log.LogLine($"AMAZON.NavigateHomeIntent: send default message like: Hey R2");
+                        innerResponse = new SsmlOutputSpeech();
+                        (innerResponse as SsmlOutputSpeech).Ssml = "<audio src=\"https://bblake.info/assets/r2d2b2/probably-not.mp3\"/>"; //TODO fix audio playback
+                        response.Response.ShouldEndSession = false;
                         break;
                     case "RememberPersonIntent":
-                        log.LogLine($"GetFactIntent sent: send new fact");
+                        log.LogLine($"RememberPersonIntent sent");
                         innerResponse = new PlainTextOutputSpeech();
                         (innerResponse as PlainTextOutputSpeech).Text = "What the fuck did you just fucking say about me, you little bitch? I’ll have you know " +
                 "I graduated top of my class in the Navy Seals, and I’ve been involved in numerous secret raids on " +
@@ -68,7 +76,7 @@ namespace R2D2B2
                 "States Marine Corps and I will use it to its full extent to wipe your miserable ass off the face " +
                 "of the continent, you little shit.If only you could have known what unholy retribution your little " +
                 "“clever” comment was about to bring down upon you, maybe you would have held your fucking tongue. " +
-                "But you couldn’t, you didn’t, and now you’re paying the price, you goddamn idiot.I will shit fury " +
+                "But you couldn’t, you didn’t, and now you’re paying the price, you goddamn idiot. I will shit fury " +
                 "all over you and you will drown in it. You’re fucking dead, kiddo.";
                         break;
                     default:

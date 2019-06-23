@@ -34,7 +34,7 @@ namespace R2D2G2
 
             InitGPIO();
             InitMotors();
-            InitSoundEffects();
+            InitSoundEffects(); //TODO check if R2D2G2 has internet to get the audio files and if not just load one sorta sad file
 
             gamepads = new List<Gamepad>();
             Gamepad.GamepadAdded += Gamepad_GamepadAdded;
